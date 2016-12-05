@@ -27,6 +27,14 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
     });
   };
 
+  o.downvote = function(post) {
+    return $http.put('/posts/' + post._id + '/downvote', null, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      post.downvotes += 1;
+    });
+  };
+
   o.get = function(id) {
     return $http.get('/posts/' + id).then(function(res) {
       return res.data;
@@ -109,21 +117,15 @@ app.controller('MainCtrl', [
         $scope.test = 'Hello World!';
         $scope.posts = posts.posts;
         $scope.isLoggedIn = auth.isLoggedIn;
-        $scope.addPost = function() {
-            if (!$scope.title || $scope.title === '') {
-                return;
-            }
-            posts.create({
-              title: $scope.title,
-              link: $scope.link
-            })
-            $scope.title = '';
-            $scope.link = '';
-        };
 
         $scope.incrementUpvotes = function(post) {
             posts.upvote(post);
         };
+
+        $scope.incrementDownvotes = function(post) {
+            posts.downvote(post);
+        };
+
 
     }
 ]);
@@ -172,6 +174,10 @@ function($stateProvider, $urlRouterProvider) {
           $state.go('home');
         }
       }]
+    }).state('addnewpost', {
+      url: '/addnewpost',
+      templateUrl: '/addnewpost.html',
+      controller: 'PostsCtrl'
     });
 
   $urlRouterProvider.otherwise('home');
@@ -182,6 +188,7 @@ app.controller('PostsCtrl', [
   'posts',
   'post',
   'auth',
+  '$log',
   function($scope, posts, post, auth){
     $scope.post = post;
     $scope.isLoggedIn = auth.isLoggedIn;
@@ -194,6 +201,24 @@ app.controller('PostsCtrl', [
         $scope.post.comments.push(comment);
       });
       $scope.body = '';
+    };
+
+    $scope.addPost = function() {
+        if (!$scope.title || $scope.title === '') {
+            return;
+        }
+        $log.log($scope.currentUser);
+        posts.create({
+          title: $scope.title,
+          summary: $scope.summary,
+          body: $scope.body,
+          link: $scope.link,
+          author: $scope.currentUser
+        })
+        $scope.title = '';
+        $scope.body = '';
+        $scope.summary = '';
+        $scope.link = '';
     };
 
     $scope.incrementUpvotes = function(comment){
