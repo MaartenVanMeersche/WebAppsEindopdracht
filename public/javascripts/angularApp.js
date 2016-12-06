@@ -1,4 +1,4 @@
-var app = angular.module('flapperNews', ['ui.router']);
+var app = angular.module('gamingNews', ['ui.router']);
 
 app.factory('posts', ['$http', 'auth', function($http, auth){
   var o = {
@@ -62,11 +62,11 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   var auth = {};
 
   auth.saveToken = function(token) {
-    $window.localStorage['flapper-news-token'] = token;
+    $window.localStorage['gaming-news-token'] = token;
   };
 
   auth.getToken = function() {
-    return $window.localStorage['flapper-news-token'];
+    return $window.localStorage['gaming-news-token'];
   };
 
   auth.isLoggedIn = function(){
@@ -102,8 +102,8 @@ app.factory('auth', ['$http', '$window', function($http, $window){
     });
   };
 
-  auth.logOut = function(){
-    $window.localStorage.removeItem('flapper-news-token');
+  auth.logOut = function(user){
+    $window.localStorage.removeItem('gaming-news-token');
   };
 
   return auth;
@@ -176,7 +176,12 @@ function($stateProvider, $urlRouterProvider) {
     }).state('addnewpost', {
       url: '/addnewpost',
       templateUrl: '/addnewpost.html',
-      controller: 'PostsCtrl'
+      controller: 'PostsCtrl',
+      onEnter: ['$state', 'auth', function($state, auth) {
+          if (!auth.isLoggedIn()) {
+            $state.go('login');
+          }
+      }]
     });
 
   $urlRouterProvider.otherwise('home');
@@ -244,6 +249,14 @@ function($scope, $state, auth){
 
   $scope.logIn = function(){
     auth.logIn($scope.user).error(function(error){
+      $scope.error = error;
+    }).then(function(){
+      $state.go('home');
+    });
+  };
+
+  $scope.logOut = function(){
+    auth.logOut($scope.user).error(function(error){
       $scope.error = error;
     }).then(function(){
       $state.go('home');
