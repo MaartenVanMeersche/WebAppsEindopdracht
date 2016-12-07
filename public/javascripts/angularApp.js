@@ -117,6 +117,24 @@ app.controller('MainCtrl', [
         $scope.posts = posts.posts;
         $scope.isLoggedIn = auth.isLoggedIn;
 
+        $scope.addPost = function() {
+            if (!$scope.title || $scope.title === '') {
+                return;
+            }
+            posts.create({
+              title: $scope.title,
+              summary: $scope.summary,
+              body: $scope.body,
+              link: $scope.link,
+              date: new Date(),
+            })
+            $scope.title = '';
+            $scope.summary = '';
+            $scope.body = '';
+            $scope.link = '';
+
+        };
+
         $scope.incrementUpvotes = function(post) {
             posts.upvote(post);
         };
@@ -176,7 +194,7 @@ function($stateProvider, $urlRouterProvider) {
     }).state('addnewpost', {
       url: '/addnewpost',
       templateUrl: '/addnewpost.html',
-      controller: 'PostsCtrl',
+      controller: 'MainCtrl',
       onEnter: ['$state', 'auth', function($state, auth) {
           if (!auth.isLoggedIn()) {
             $state.go('login');
@@ -192,7 +210,6 @@ app.controller('PostsCtrl', [
   'posts',
   'post',
   'auth',
-  '$log',
   function($scope, posts, post, auth){
     $scope.post = post;
     $scope.isLoggedIn = auth.isLoggedIn;
@@ -205,24 +222,6 @@ app.controller('PostsCtrl', [
         $scope.post.comments.push(comment);
       });
       $scope.body = '';
-    };
-
-    $scope.addPost = function() {
-        if (!$scope.title || $scope.title === '') {
-            return;
-        }
-        $log.log($scope.currentUser);
-        posts.create({
-          title: $scope.title,
-          summary: $scope.summary,
-          body: $scope.body,
-          link: $scope.link,
-          author: $scope.currentUser
-        })
-        $scope.title = '';
-        $scope.body = '';
-        $scope.summary = '';
-        $scope.link = '';
     };
 
     $scope.incrementUpvotes = function(comment){

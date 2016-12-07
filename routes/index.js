@@ -101,7 +101,7 @@ router.param('comment', function(req, res, next, id) {
 });
 
 router.post('/register', function(req, res, next){
-  if(!req.body.username || !req.body.password){
+  if(!req.body.username || !req.body.password || !req.body.emailadres){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
 
@@ -109,6 +109,7 @@ router.post('/register', function(req, res, next){
 
   user.username = req.body.username;
   user.setPassword(req.body.password);
+  user.emailadres = req.body.emailadres;
 
   user.save(function(err) {
     if(err){ return next(err); }

@@ -36,11 +36,11 @@
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <p ng-show="ctrl.isLoggedIn()" class="navbar-text navbar-right">
-                  Signed in as {{ctrl.currentUser()}}
+              <p ng-show="isLoggedIn()" class="navbar-text navbar-right">
+                  Signed in as {{currentUser()}}
               </p>
               <ul class="nav navbar-nav navbar-left">
-                  <li ng-show="isLoggedIn()"><a href="#/home" ng-click="ctrl.logOut()">Log Out</a></li>
+                  <li ng-show="isLoggedIn()"><a href="#/home" ng-click="logOut()">Log Out</a></li>
                   <li ng-hide="isLoggedIn()"><a href="#/login">Log In</a></li>
                   <li ng-hide="isLoggedIn()"><a href="#/register">Register</a></li>
                   <li ng-show="isLoggedIn()"><a href="#/addnewpost">Add news</a></li>
@@ -106,7 +106,7 @@
               <input type="text" class="form-control" placeholder="Summary" ng-model="summary"></input>
           </div>
           <div class="form-group">
-              <input type="text" class="form-control" placeholder="Body" ng-model="body"></input>
+              <textarea name="textarea" class="form-control" cols="40" rows="5" ng-model="body" placeholder="Body"></textarea>
           </div>
           <div class="form-group">
               <input type="text" class="form-control" placeholder="Link" ng-model="link"></input>
@@ -145,8 +145,10 @@
         <div ng-show="error.message" class="alert alert-danger alert-custom" role="alert">{{error.message}}</div>
         <form ng-submit="register()" class="form-signin">
             <h2 class="form-signin-heading text-center">Register</h2>
-            <input type="email" class="form-control form-login" name="username" placeholder="Email Address" required
-                   autofocus ng-model="user.username"/>
+            <input type="text" class="form-control form-login" name="username" placeholder="Username" required
+                   ng-model="user.username"/>
+            <input type="email" class="form-control form-login" name="emailadres" placeholder="Email Address" required
+                   autofocus ng-model="user.emailadres"/>
             <input type="password" class="form-control form-login" name="password" placeholder="Password" required
                    ng-model="user.password"/>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
@@ -158,7 +160,7 @@
         <div ng-show="error.message" class="alert alert-danger alert-custom text-center" role="alert">{{error.message}}</div>
         <form ng-submit="logIn()" class="form-signin">
             <h2 class="form-signin-heading text-center">Login</h2>
-            <input type="email" class="form-control form-login" name="username" placeholder="Email Address" required
+            <input type="text" class="form-control form-login" name="username" placeholder="Username" required
                    autofocus ng-model="user.username"/>
             <input type="password" class="form-control form-login" name="password" placeholder="Password" required
                    ng-model="user.password"/>

@@ -79,6 +79,11 @@
 	  margin-bottom: 20px;
 	}
 
+  input[type="text"] {
+    margin-top: 20px;
+	  margin-bottom: 20px;
+	}
+
 	input[type="password"] {
 	  margin-bottom: 20px;
 	}
@@ -89,7 +94,3 @@
 .dropdown-margin{
   margin-left:8px;
 }
-
-/*TEST*/
-
-/*TEST 2*/
