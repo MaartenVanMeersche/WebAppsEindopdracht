@@ -123,7 +123,8 @@ app.controller('MainCtrl', [
     '$scope',
     'posts',
     'auth',
-    function($scope, posts, auth) {
+    '$state',
+    function($scope, posts, auth, $state) {
         $scope.posts = posts.posts;
         $scope.isLoggedIn = auth.isLoggedIn;
 
@@ -137,7 +138,9 @@ app.controller('MainCtrl', [
               body: $scope.body,
               link: $scope.link,
               date: new Date(),
-            })
+            }).then(function(){
+              $state.go('home');
+            });
             $scope.title = '';
             $scope.summary = '';
             $scope.body = '';
@@ -228,12 +231,27 @@ app.controller('PostsCtrl', [
         return;
       }
       posts.addComment(post._id, {
-        body: $scope.body
+        body: $scope.body,
+        date: new Date()
       }).success(function(comment) {
         $scope.post.comments.push(comment);
       });
       $scope.body = '';
     };
+
+    $scope.hasLink = function(){
+      if(angular.isUndefined(post.link)){
+        return false;
+      }
+      return true;
+    }
+
+    $scope.hasComments = function(){
+      if(post.comments.length === 0){
+        return false;
+      }
+      return true;
+    }
 
     $scope.incrementUpvotes = function(comment){
       posts.upvoteComment(post, comment);

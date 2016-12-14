@@ -1,5 +1,5 @@
 .green {
-  color: #48f902;
+  color: #1dd217;
 }
 
 .red {
@@ -93,4 +93,37 @@
 }
 .dropdown-margin{
   margin-left:8px;
+}
+
+.max-cell {
+  width: 500px;
+}
+
+.btn {
+  width: 200px;
+  background-color: #f49504;
+  border-color: #f49504;
+}
+
+.btn:hover {
+  background-color: #df950f;
+  border-color: #df950f;
+}
+
+.btn:focus {
+  background-color: #df950f;
+  border-color: #df950f;
+}
+
+.glyphicon.glyphicon-cloud {
+  font-size: 50px;
+  color: #f49504;
+}
+
+.glyphicon.glyphicon-cloud:hover {
+  color: #df950f;
+}
+
+.glyphicon.glyphicon-cloud:focus {
+  color: #df950f;
 }
