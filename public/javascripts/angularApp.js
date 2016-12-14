@@ -101,6 +101,8 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   };
 
   auth.register = function(user){
+    console.log("auth");
+    console.log(user);
     return $http.post('/register', user).success(function(data){
       auth.saveToken(data.token);
     });
@@ -244,14 +246,14 @@ app.controller('PostsCtrl', [
         return false;
       }
       return true;
-    }
+    };
 
     $scope.hasComments = function(){
       if(post.comments.length === 0){
         return false;
       }
       return true;
-    }
+    };
 
     $scope.incrementUpvotes = function(comment){
       posts.upvoteComment(post, comment);
@@ -307,7 +309,7 @@ app.controller('NavCtrl', [
 app.directive("registerdirective", function() {
     return {
         restrict : "E",
-        template : '<div class="wrapper"> <div ng-show="error.message" class="alert alert-danger alert-custom" role="alert">{{error.message}}</div>      <form ng-submit="register()" class="form-signin">          <h2 class="form-signin-heading text-center">Register</h2>        <input type="text" class="form-control form-login" name="username" placeholder="Username" required                 ng-model="user.username"/>    <input type="email" class="form-control form-login" name="emailadres" placeholder="Email Address" required             autofocus ng-model="user.emailadres"/>    <input type="password" class="form-control form-login" name="password" placeholder="Password" required             ng-model="user.password"/><button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>  </form></div>'
+        template : '<div class="wrapper"> <div ng-show="error.message" class="alert alert-danger alert-custom" role="alert">{{error.message}}</div>      <form ng-submit="register()" class="form-signin">          <h2 class="form-signin-heading text-center">Register</h2>        <input type="text" class="form-control form-login" name="username" placeholder="Username" required                 ng-model="user.username"/>    <input type="email" class="form-control form-login" name="emailadres" placeholder="Email Address" required             autofocus ng-model="user.emailadres"/>    <input type="password" class="form-control form-login" name="password" placeholder="Password" required             ng-model="user.password"/><button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>  </form></div></div>'
     };
 });
 app.directive("logindirective", function() {

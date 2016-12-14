@@ -66,7 +66,6 @@ router.put('/posts/:post/downvote', auth, function(req, res, next) {
 
 router.post('/posts/:post/comments', auth, function(req, res, next) {
   var comment = new Comment(req.body);
-  console.log("COMMENT: " + comment);
   comment.post = req.post;
   comment.author = req.payload.username;
   comment.save(function(err, comment) {
@@ -120,10 +119,10 @@ router.post('/register', function(req, res, next){
   user.username = req.body.username;
   user.setPassword(req.body.password);
   user.emailadres = req.body.emailadres;
-
   user.save(function(err) {
-    if(err){ return next(err); }
-
+    if(err){
+      return next(err);
+    }
     return res.json({token: user.generateJWT()})
   });
 });
