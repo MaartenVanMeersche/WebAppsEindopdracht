@@ -123,52 +123,26 @@
           {{post.body}}
         </p>
         <div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
-            <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span> {{comment.upvotes}} - by {{comment.author}}
+            <span class="glyphicon glyphicon-thumbs-up green" ng-click="incrementUpvotes(comment)"></span> {{comment.upvotes}} - by {{comment.author}}
+            <span class="glyphicon glyphicon-thumbs-down red" ng-click="incrementDownvotes(comment)"></span> {{comment.downvotes}} - by {{comment.author}}
             <span style="font-size:20px; margin-left:10px;">
-                    {{comment.body}}
-                </span>
+              {{comment.body}}
+            </span>
         </div>
 
         <form ng-submit="addComment()" ng-show="isLoggedIn" style="margin-top:30px;">
             <h3>Add a new comment</h3>
-            <div ng-hide="isLoggedIn()">
-              <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can comment.</h3>
-            </div>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Comment" ng-model="body"></input>
             </div>
-            <button type="submit" class="btn btn-primary">Post</button>
+            <button type="submit" class="btn btn-primary">Add comment</button>
         </form>
     </script>
     <script type="text/ng-template" id="/register.html">
       <registerdirective></registerdirective>
-      <!--
-      <div class="wrapper">
-        <div ng-show="error.message" class="alert alert-danger alert-custom" role="alert">{{error.message}}</div>
-        <form ng-submit="register()" class="form-signin">
-            <h2 class="form-signin-heading text-center">Register</h2>
-            <input type="text" class="form-control form-login" name="username" placeholder="Username" required
-                   ng-model="user.username"/>
-            <input type="email" class="form-control form-login" name="emailadres" placeholder="Email Address" required
-                   autofocus ng-model="user.emailadres"/>
-            <input type="password" class="form-control form-login" name="password" placeholder="Password" required
-                   ng-model="user.password"/>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-        </form>
-      </div>-->
     </script>
     <script type="text/ng-template" id="/login.html">
-      <div class="wrapper">
-        <div ng-show="error.message" class="alert alert-danger alert-custom text-center" role="alert">{{error.message}}</div>
-        <form ng-submit="logIn()" class="form-signin">
-            <h2 class="form-signin-heading text-center">Login</h2>
-            <input type="text" class="form-control form-login" name="username" placeholder="Username" required
-                   autofocus ng-model="user.username"/>
-            <input type="password" class="form-control form-login" name="password" placeholder="Password" required
-                   ng-model="user.password"/>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-        </form>
-      </div>
+      <logindirective></logindirective>
     </script>
 </body>
 

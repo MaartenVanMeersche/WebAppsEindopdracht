@@ -64,8 +64,9 @@ router.put('/posts/:post/downvote', auth, function(req, res, next) {
   });
 });
 
-router.post('posts/:post/comments', auth, function(req, res, next) {
+router.post('/posts/:post/comments', auth, function(req, res, next) {
   var comment = new Comment(req.body);
+  console.log("COMMENT: " + comment);
   comment.post = req.post;
   comment.author = req.payload.username;
   comment.save(function(err, comment) {
@@ -87,6 +88,15 @@ router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, nex
     res.json(comment);
   });
 });
+
+router.put('/posts/:post/comments/:comment/downvote', auth, function(req, res, next) {
+  req.comment.downvote(function(err, comment){
+    if (err) { return next(err); }
+
+    res.json(comment);
+  });
+});
+
 
 router.param('comment', function(req, res, next, id) {
   var query = Comment.findById(id);

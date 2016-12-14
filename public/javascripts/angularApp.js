@@ -42,6 +42,8 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
   };
 
   o.addComment = function(id, comment) {
+    console.log(id);
+    console.log(comment);
     return $http.post('/posts/' + id + '/comments', comment, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     });
@@ -52,6 +54,14 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
       comment.upvotes += 1;
+    });
+  };
+
+  o.downvoteComment = function(post, comment) {
+    return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/downvote', null, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      comment.downvotes += 1;
     });
   };
 
@@ -214,10 +224,11 @@ app.controller('PostsCtrl', [
     $scope.post = post;
     $scope.isLoggedIn = auth.isLoggedIn;
     $scope.addComment = function(){
-      if($scope.body === ''){ return; }
+      if($scope.body === ''){
+        return;
+      }
       posts.addComment(post._id, {
-        body: $scope.body,
-        author: 'user'
+        body: $scope.body
       }).success(function(comment) {
         $scope.post.comments.push(comment);
       });
@@ -226,6 +237,10 @@ app.controller('PostsCtrl', [
 
     $scope.incrementUpvotes = function(comment){
       posts.upvoteComment(post, comment);
+    };
+
+    $scope.incrementDownvotes = function(comment){
+      posts.downvoteComment(post, comment);
     };
 
   }
@@ -275,6 +290,12 @@ app.directive("registerdirective", function() {
     return {
         restrict : "E",
         template : '<div class="wrapper"> <div ng-show="error.message" class="alert alert-danger alert-custom" role="alert">{{error.message}}</div>      <form ng-submit="register()" class="form-signin">          <h2 class="form-signin-heading text-center">Register</h2>        <input type="text" class="form-control form-login" name="username" placeholder="Username" required                 ng-model="user.username"/>    <input type="email" class="form-control form-login" name="emailadres" placeholder="Email Address" required             autofocus ng-model="user.emailadres"/>    <input type="password" class="form-control form-login" name="password" placeholder="Password" required             ng-model="user.password"/><button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>  </form></div>'
+    };
+});
+app.directive("logindirective", function() {
+    return {
+      restrict : "E",
+      template : '<div class="wrapper">        <div ng-show="error.message" class="alert alert-danger alert-custom text-center" role="alert">{{error.message}}</div>        <form ng-submit="logIn()" class="form-signin">            <h2 class="form-signin-heading text-center">Login</h2>            <input type="text" class="form-control form-login" name="username" placeholder="Username" required               autofocus ng-model="user.username"/>  <input type="password" class="form-control form-login" name="password" placeholder="Password" required         ng-model="user.password"/><button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>    </form></div>'
     };
 });
 
